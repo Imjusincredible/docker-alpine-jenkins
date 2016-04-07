@@ -30,5 +30,7 @@ USER root
 
 RUN apk --update add --no-cache mercurial git && \
     rm -rf /var/cache/apk/*
+    
+USER ${user}
 
 ```
