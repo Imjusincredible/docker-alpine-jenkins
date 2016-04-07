@@ -1,4 +1,4 @@
-# Alpine-based Jenkins Docker image
+# Jenkins running under Alpine Linux and Oracle JDK 8
 [![Docker Repository on Quay.io](https://quay.io/repository/elifarley/alpine-jenkins/status "Docker Repository on Quay.io")](https://quay.io/repository/elifarley/alpine-jenkins)
 
 ``docker pull quay.io/elifarley/alpine-jenkins:latest``
