@@ -1,4 +1,5 @@
 # Official Jenkins Docker image
+[![Docker Repository on Quay.io](https://quay.io/repository/elifarley/alpine-jenkins/status "Docker Repository on Quay.io")](https://quay.io/repository/elifarley/alpine-jenkins)
 
 The Jenkins Continuous Integration and Delivery server.
 
