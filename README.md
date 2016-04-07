@@ -18,3 +18,17 @@ This is a fully functional Jenkins server, based on the Long Term Support releas
 docker run -p 8080:8080 -p 50000:50000 quay.io/elifarley/alpine-jenkins:latest
 ```
 
+Only a few Alpine packages have been installed, like *curl*, *wget*, *zip* and *bash*.
+
+You can create a derived image and include a few more packages, like this:
+
+```
+FROM quay.io/elifarley/alpine-jenkins:latest
+MAINTAINER Your Name <your-name@host.com>
+
+USER root
+
+RUN apk --update add --no-cache mercurial git && \
+    rm -rf /var/cache/apk/*
+
+```
