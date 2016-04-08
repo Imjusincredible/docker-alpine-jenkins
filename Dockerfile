@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejdk8:slim
+FROM frolvlad/alpine-oraclejdk8:cleaned
 MAINTAINER Elifarley <elifarley@gmail.com>
 
 RUN apk --update add --no-cache curl zip bash && \
