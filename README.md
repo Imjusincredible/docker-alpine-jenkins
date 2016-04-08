@@ -1,5 +1,5 @@
 # Jenkins running under Alpine Linux and Oracle JDK 8
-[![Docker Repository on Quay.io](https://quay.io/repository/elifarley/alpine-jenkins/status "Docker Repository on Quay.io")](https://quay.io/repository/elifarley/alpine-jenkins)
+[![Docker Repository on Quay.io](https://quay.io/repository/elifarley/alpine-jenkins/status "Docker Repository on Quay.io")](https://quay.io/repository/elifarley/alpine-jenkins) 126.0 MB
 
 ``docker pull quay.io/elifarley/alpine-jenkins:latest``
 
