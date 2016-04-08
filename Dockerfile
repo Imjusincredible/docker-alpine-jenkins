@@ -1,7 +1,7 @@
 FROM frolvlad/alpine-oraclejdk8:cleaned
 MAINTAINER Elifarley <elifarley@gmail.com>
 
-RUN apk --update add --no-cache curl wget zip bash && \
+RUN apk --update add --no-cache curl zip bash && \
     rm -rf /var/cache/apk/*
 
 ENV JENKINS_HOME /var/jenkins_home
