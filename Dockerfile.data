@@ -1,0 +1,28 @@
+FROM alpine:3.5
+#MAINTAINER Elifarley <elifarley@gmail.com>
+
+ENV JENKINS_HOME=/var/jenkins_home
+
+ARG user=jenkins 
+ARG group=jenkins
+ARG uid=1000
+
+# Jenkins is run with user `jenkins`, uid = 1000
+# If you bind mount a volume from the host or a data container, 
+# ensure you use the same uid
+RUN adduser -h "$JENKINS_HOME" -u ${uid} -s /bin/bash -D ${user} && \
+	mkdir -p /var/jenkins_home && \
+	mkdir -p /var/log/jenkins && \
+	mkdir -p /var/cache/jenkins && \
+	chown -R jenkins "$JENKINS_HOME" /var/log/jenkins /var/cache/jenkins
+	#&& \
+	# chown -R jenkins:jenkins /var/log/jenkins && \
+	# chown -R jenkins:jenkins /var/cache/jenkins
+
+# Jenkins home directory is a volume, so configuration and build history 
+# can be persisted and survive image upgrades
+VOLUME /var/jenkins_home /var/log/jenkins /var/cache/jenkins
+
+USER ${user}
+
+CMD ["echo", "Jenkins data running"]

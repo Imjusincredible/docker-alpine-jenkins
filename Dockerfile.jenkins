@@ -1,15 +1,25 @@
 FROM frolvlad/alpine-oraclejdk8:cleaned
 MAINTAINER Elifarley <elifarley@gmail.com>
 
-RUN apk --update add --no-cache curl zip bash && \
+RUN apk --update add --no-cache curl zip bash git docker openssh && \
+    curl -L "https://github.com/docker/compose/releases/download/1.11.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose && \
     rm -rf /var/cache/apk/*
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT 50000
+ENV JENKINS_OPTS="--logfile=/var/log/jenkins/jenkins.log"
+# ENV JAVA_OPTS="-Djava.awt.headless=true"
+# ENV JENKINS_OPTS="--handlerCountStartup=100 --handlerCountMax=300 --logfile=/var/log/jenkins/jenkins.log --webroot=/var/cache/jenkins/war"
 
-ARG user=jenkins
-ARG group=jenkins
-ARG uid=1000
+ARG user
+ENV user jenkins
+
+ARG group
+ENV group jenkins
+
+ARG uid
+ENV uid 1000
 
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container, 
@@ -18,7 +28,7 @@ RUN adduser -h "$JENKINS_HOME" -u ${uid} -s /bin/bash -D ${user}
 
 # Jenkins home directory is a volume, so configuration and build history 
 # can be persisted and survive image upgrades
-VOLUME /var/jenkins_home
+#VOLUME /var/jenkins_home /var/log/jenkins
 
 # `/usr/share/jenkins/ref/` contains all reference configuration we want 
 # to set on a fresh new installation. Use it to bundle additional plugins 
@@ -34,9 +44,9 @@ RUN curl -fsSL https://github.com/krallin/tini/releases/download/v0.5.0/tini-sta
 COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
 ARG JENKINS_VERSION
-ENV JENKINS_VERSION ${JENKINS_VERSION:-1.642.4}
+ENV JENKINS_VERSION ${JENKINS_VERSION:-2.32.3}
 ARG JENKINS_SHA
-ENV JENKINS_SHA ${JENKINS_SHA:-3cb37dde64b1aca9952c7a4f98f3c0b71d02cd8b}
+ENV JENKINS_SHA ${JENKINS_SHA:-a25b9a314ca9e76f9673da7309e1882e32674223}
 
 
 # could use ADD but this one does not check Last-Modified header 
@@ -45,7 +55,9 @@ RUN curl -fsSL http://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war
   && echo "$JENKINS_SHA  /usr/share/jenkins/jenkins.war" | sha1sum -wc -
 
 ENV JENKINS_UC https://updates.jenkins-ci.org
-RUN chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref
+RUN mkdir -p /var/log/jenkins && \
+	chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref /var/log/jenkins
+
 
 # for main web interface:
 EXPOSE 8080
